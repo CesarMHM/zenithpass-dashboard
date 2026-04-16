@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ZenithPass Dashboard v4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel2: #1f2937;
+      --card: #182235;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --red: #ef4444;
+      --border: #243145;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0b1220, var(--bg));
+      color: var(--text);
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a, #1d4ed8);
+      padding: 24px 18px;
+      text-align: center;
+      border-bottom: 1px solid #29406a;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 34px;
+      letter-spacing: 0.5px;
+    }
+
+    header p {
+      margin: 8px 0 0 0;
+      color: #dbeafe;
+      font-size: 14px;
+    }
+
+    .contenedor {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 16px 28px 16px;
+    }
+
+    .barra-superior {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+      background: rgba(17, 24, 39, 0.8);
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 14px;
+    }
+
+    button, select {
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    button {
+      background: var(--blue);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    select {
+      background: var(--panel2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    label {
+      color: var(--text);
+    }
+
+    .estado-inline {
+      font-size: 13px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    .tarjetas {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .tarjeta {
+      background: linear-gradient(180deg, var(--card), var(--panel));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+    }
+
+    .tarjeta h3 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: normal;
+    }
+
+    .tarjeta .valor {
+      font-size: 34px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .tarjeta .subtexto {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .grid-doble {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .grid-triple {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 1100px) {
+      .grid-doble, .grid-triple {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .bloque {
+      background: linear-gradient(180deg, var(--panel), #0f1a2b);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+    }
+
+    .bloque h2 {
+      margin-top: 0;
+      font-size: 20px;
+      color: #dbeafe;
+    }
+
+    .fila-barras {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .fila-barras span {
+      display: inline-block;
+      width: 170px;
+      font-weight: bold;
+      color: var(--text);
+    }
+
+    .barra-contenedor {
+      display: inline-block;
+      width: 55%;
+      min-width: 180px;
+      height: 22px;
+      background: #243145;
+      border-radius: 10px;
+      overflow: hidden;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+
+    .barra {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--blue));
+      width: 0%;
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+
+    .zona-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+    }
+
+    .zona-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      background: #172132;
+    }
+
+    .zona-card h4 {
+      margin: 0 0 8px 0;
+      color: #dbeafe;
+      font-size: 15px;
+    }
+
+    .zona-card .num {
+      font-size: 30px;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .zona-card .estado-zona {
+      font-size: 13px;
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .estado-verde {
+      background: rgba(34, 197, 94, 0.15);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .estado-naranja {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .estado-rojo {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .alerta {
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      border: 1px solid transparent;
+    }
+
+    .alerta.info {
+      background: rgba(59, 130, 246, 0.12);
+      color: #93c5fd;
+      border-color: rgba(59, 130, 246, 0.25);
+    }
+
+    .alerta.ok {
+      background: rgba(34, 197, 94, 0.12);
+      color: #86efac;
+      border-color: rgba(34, 197, 94, 0.25);
+    }
+
+    .alerta.warn {
+      background: rgba(245, 158, 11, 0.12);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.25);
+    }
+
+    .alerta.danger {
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    th, td {
+      border-bottom: 1px solid #233148;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #162033;
+      color: #bfdbfe;
+    }
+
+    tr:hover {
+      background: rgba(59, 130, 246, 0.06);
+    }
+
+    .estado {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nota {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .resumen-box {
+      display: grid;
+      gap: 12px;
+    }
+
+    .resumen-item {
+      background: #172132;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .resumen-item .titulo {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .resumen-item .dato {
+      font-size: 22px;
+      font-weight: bold;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ZenithPass Dashboard</h1>
+  <p>Centro de monitoreo de accesos y flujo de visitantes</p>
+</header>
+
+<div class="contenedor">
+
+  <div class="barra-superior">
+    <button onclick="cargarDatos()">Actualizar datos</button>
+
+    <label for="filtroFecha"><strong>Filtrar por fecha:</strong></label>
+    <select id="filtroFecha" onchange="aplicarFiltroFecha()">
+      <option value="TODAS">Todas las fechas</option>
+    </select>
+
+    <div class="estado-inline" id="estadoCargaInline">Esperando carga...</div>
+  </div>
+
+  <!-- TARJETAS PRINCIPALES -->
+  <div class="tarjetas">
+    <div class="tarjeta">
+      <h3>Total de registros</h3>
+      <div class="valor" id="totalRegistros">0</div>
+      <div class="subtexto">Eventos detectados</div>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Acceso A</h3>
+      <div class="valor" id="totalA">0</div>
+      <div class="subtexto">Registros del acceso A</div>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Acceso B</h3>
+      <div class="valor" id="totalB">0</div>
+      <div class="subtexto">Registros del acceso B</div>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Acceso C</h3>
+      <div class="valor" id="totalC">0</div>
+      <div class="subtexto">Registros del acceso C</div>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Fecha seleccionada</h3>
+      <div class="valor" id="fechaSeleccionadaCard" style="font-size:22px;">Todas</div>
+      <div class="subtexto">Filtro actual</div>
+    </div>
+
+    <div class="tarjeta">
+      <h3>Último movimiento</h3>
+      <div class="valor" id="ultimoMovimientoCard" style="font-size:22px;">--:--:--</div>
+      <div class="subtexto" id="ultimoMovimientoSubtexto">Sin datos</div>
+    </div>
+  </div>
+
+  <div class="grid-triple">
+    <div class="bloque">
+      <h2>Resumen ejecutivo</h2>
+      <div class="resumen-box" id="resumenEjecutivo"></div>
+    </div>
+
+    <div class="bloque">
+      <h2>Alertas operativas</h2>
+      <div id="alertasContainer"></div>
+    </div>
+
+    <div class="bloque">
+      <h2>Conteo por acceso</h2>
+      <div id="accesosContainer"></div>
+    </div>
+  </div>
+
+  <div class="grid-doble">
+    <div class="bloque">
+      <h2>Conteo por zona</h2>
+      <div id="zonasContainer"></div>
+    </div>
+
+    <div class="bloque">
+      <h2>Conteo por tipo detectado</h2>
+      <div id="tiposContainer"></div>
+    </div>
+  </div>
+
+  <div class="grid-doble">
+    <div class="bloque">
+      <h2>Resumen visual por zona</h2>
+      <div id="zonasTarjetasContainer" class="zona-grid"></div>
+      <div class="nota">La saturación mostrada aquí es visual y se basa en la cantidad de registros del filtro actual.</div>
+    </div>
+
+    <div class="bloque">
+      <h2>Resumen por familia de elemento</h2>
+      <div id="familiasContainer"></div>
+      <div class="nota">
+        Escalable para futuras clases como pulseras, credenciales, pases especiales y otros identificadores.
+      </div>
+    </div>
+  </div>
+
+  <div class="bloque">
+    <h2>Últimos movimientos</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Acceso</th>
+          <th>Zona</th>
+          <th>Tipo</th>
+          <th>Confianza</th>
+          <th>Dispositivo</th>
+        </tr>
+      </thead>
+      <tbody id="tablaRegistros"></tbody>
+    </table>
+    <div class="estado" id="estadoCarga">Esperando carga de datos...</div>
+  </div>
+
+</div>
+
+<script>
+  const FIREBASE_URL = "https://in-26-v1-default-rtdb.firebaseio.com/accesos.json";
+
+  const CONFIG_FAMILIAS = {
+    credencial: ["ITESI", "INE", "CREDENCIAL", "OXXO", "FARMACIA"],
+    pulsera: ["PULSERA", "ROJA", "AZUL", "VERDE", "AMARILLA", "MORADA", "VIPBAND", "FASTBAND"]
+  };
+
+  let registrosGlobales = [];
+  let registrosFiltrados = [];
+
+  function limpiarTexto(valor) {
+    if (valor === null || valor === undefined) return "";
+    let texto = String(valor).trim();
+
+    while (texto.startsWith('"') && texto.endsWith('"') && texto.length >= 2) {
+      texto = texto.slice(1, -1).trim();
+    }
+
+    return texto;
+  }
+
+  function limpiarNumero(valor) {
+    const limpio = limpiarTexto(valor);
+    const numero = Number(limpio);
+    return isNaN(numero) ? 0 : numero;
+  }
+
+  function formatearHora(hora) {
+    const texto = limpiarTexto(hora).padStart(6, "0");
+
+    if (texto.length === 6) {
+      const hh = texto.substring(0, 2);
+      const mm = texto.substring(2, 4);
+      const ss = texto.substring(4, 6);
+      return `${hh}:${mm}:${ss}`;
+    }
+
+    return texto;
+  }
+
+  function formatearFecha(fecha) {
+    const texto = limpiarTexto(fecha);
+
+    if (texto.includes("-")) {
+      const partes = texto.split("-");
+      if (partes.length === 3) {
+        const anio = partes[0];
+        const mes = partes[1];
+        const dia = partes[2];
+        return `${dia}-${mes}-${anio}`;
+      }
+    }
+
+    return texto;
+  }
+
+  function normalizarTipoBase(tipo) {
+    return limpiarTexto(tipo).toUpperCase();
+  }
+
+  function clasificarFamilia(tipo) {
+    const tipoNormalizado = normalizarTipoBase(tipo);
+
+    if (!tipoNormalizado) return "SIN CLASIFICAR";
+
+    for (const palabra of CONFIG_FAMILIAS.credencial) {
+      if (tipoNormalizado.includes(palabra.toUpperCase())) {
+        return "Credencial";
+      }
+    }
+
+    for (const palabra of CONFIG_FAMILIAS.pulsera) {
+      if (tipoNormalizado.includes(palabra.toUpperCase())) {
+        return "Pulsera";
+      }
+    }
+
+    return "Otro";
+  }
+
+  function normalizarRegistro(registro) {
+    const fechaOriginal = limpiarTexto(registro.fecha);
+    const horaOriginal = limpiarTexto(registro.hora);
+
+    return {
+      acceso: limpiarTexto(registro.acceso),
+      accion: limpiarTexto(registro.accion),
+      confianza: limpiarNumero(registro.confianza),
+      dispositivo: limpiarTexto(registro.dispositivo),
+      fecha: formatearFecha(fechaOriginal),
+      hora: formatearHora(horaOriginal),
+      fechaOriginal,
+      horaOriginal,
+      id_registro: limpiarTexto(registro.id_registro),
+      tipo: limpiarTexto(registro.tipo),
+      zona: limpiarTexto(registro.zona),
+      familia: clasificarFamilia(registro.tipo)
+    };
+  }
+
+  function recorrerDatos(data) {
+    const registros = [];
+    if (!data) return registros;
+
+    for (const acceso in data) {
+      const fechas = data[acceso];
+
+      for (const fecha in fechas) {
+        const horas = fechas[fecha];
+
+        for (const hora in horas) {
+          const registro = horas[hora];
+          if (typeof registro === "object" && registro !== null) {
+            registros.push(normalizarRegistro(registro));
+          }
+        }
+      }
+    }
+
+    return registros;
+  }
+
+  function llenarSelectorFechas(registros) {
+    const select = document.getElementById("filtroFecha");
+    const fechaActualSeleccionada = select.value;
+
+    const fechasUnicas = [...new Set(registros.map(r => r.fechaOriginal))].sort().reverse();
+
+    select.innerHTML = `<option value="TODAS">Todas las fechas</option>`;
+
+    fechasUnicas.forEach(fecha => {
+      const option = document.createElement("option");
+      option.value = fecha;
+      option.textContent = formatearFecha(fecha);
+      select.appendChild(option);
+    });
+
+    if ([...select.options].some(opt => opt.value === fechaActualSeleccionada)) {
+      select.value = fechaActualSeleccionada;
+    }
+  }
+
+  function aplicarFiltroFecha() {
+    const fechaSeleccionada = document.getElementById("filtroFecha").value;
+
+    if (fechaSeleccionada === "TODAS") {
+      registrosFiltrados = [...registrosGlobales];
+      document.getElementById("fechaSeleccionadaCard").textContent = "Todas";
+    } else {
+      registrosFiltrados = registrosGlobales.filter(r => r.fechaOriginal === fechaSeleccionada);
+      document.getElementById("fechaSeleccionadaCard").textContent = formatearFecha(fechaSeleccionada);
+    }
+
+    renderDashboard(registrosFiltrados);
+  }
+
+  function contarPorCampo(registros, campo) {
+    const conteo = {};
+    registros.forEach(r => {
+      const valor = r[campo] || `SIN_${campo.toUpperCase()}`;
+      conteo[valor] = (conteo[valor] || 0) + 1;
+    });
+    return conteo;
+  }
+
+  function renderTarjetas(registros) {
+    document.getElementById("totalRegistros").textContent = registros.length;
+    document.getElementById("totalA").textContent = registros.filter(r => r.acceso === "A").length;
+    document.getElementById("totalB").textContent = registros.filter(r => r.acceso === "B").length;
+    document.getElementById("totalC").textContent = registros.filter(r => r.acceso === "C").length;
+
+    if (registros.length > 0) {
+      const ordenados = [...registros].sort((a, b) => {
+        const da = `${a.fechaOriginal} ${a.horaOriginal}`;
+        const db = `${b.fechaOriginal} ${b.horaOriginal}`;
+        return db.localeCompare(da);
+      });
+
+      const ultimo = ordenados[0];
+      document.getElementById("ultimoMovimientoCard").textContent = ultimo.hora;
+      document.getElementById("ultimoMovimientoSubtexto").textContent =
+        `${ultimo.acceso} | ${ultimo.zona} | ${ultimo.tipo}`;
+    } else {
+      document.getElementById("ultimoMovimientoCard").textContent = "--:--:--";
+      document.getElementById("ultimoMovimientoSubtexto").textContent = "Sin datos";
+    }
+  }
+
+  function renderBarras(conteo, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    const claves = Object.keys(conteo);
+    const valores = Object.values(conteo);
+    const maxValor = Math.max(...valores, 1);
+
+    if (claves.length === 0) {
+      container.innerHTML = `<div class="alerta info">No hay datos para mostrar.</div>`;
+      return;
+    }
+
+    for (const clave in conteo) {
+      const cantidad = conteo[clave];
+      const porcentaje = (cantidad / maxValor) * 100;
+
+      const fila = document.createElement("div");
+      fila.className = "fila-barras";
+      fila.innerHTML = `
+        <span>${clave}</span>
+        <div class="barra-contenedor">
+          <div class="barra" style="width:${porcentaje}%"></div>
+        </div>
+        <strong>${cantidad}</strong>
+      `;
+      container.appendChild(fila);
+    }
+  }
+
+  function obtenerEstadoZona(cantidad) {
+    if (cantidad >= 5) {
+      return { texto: "Alta actividad", clase: "estado-rojo" };
+    }
+    if (cantidad >= 3) {
+      return { texto: "Actividad media", clase: "estado-naranja" };
+    }
+    return { texto: "Baja actividad", clase: "estado-verde" };
+  }
+
+  function renderTarjetasZona(conteoZonas) {
+    const container = document.getElementById("zonasTarjetasContainer");
+    container.innerHTML = "";
+
+    const zonas = Object.keys(conteoZonas);
+    if (zonas.length === 0) {
+      container.innerHTML = `<div class="alerta info">No hay zonas disponibles.</div>`;
+      return;
+    }
+
+    zonas.forEach(zona => {
+      const cantidad = conteoZonas[zona];
+      const estado = obtenerEstadoZona(cantidad);
+
+      const card = document.createElement("div");
+      card.className = "zona-card";
+      card.innerHTML = `
+        <h4>${zona}</h4>
+        <div class="num">${cantidad}</div>
+        <div class="estado-zona ${estado.clase}">${estado.texto}</div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function renderResumenEjecutivo(registros) {
+    const container = document.getElementById("resumenEjecutivo");
+    container.innerHTML = "";
+
+    if (registros.length === 0) {
+      container.innerHTML = `<div class="alerta info">No hay datos disponibles para resumen ejecutivo.</div>`;
+      return;
+    }
+
+    const conteoAccesos = {
+      A: registros.filter(r => r.acceso === "A").length,
+      B: registros.filter(r => r.acceso === "B").length,
+      C: registros.filter(r => r.acceso === "C").length
+    };
+
+    const conteoZonas = contarPorCampo(registros, "zona");
+    const conteoTipos = contarPorCampo(registros, "tipo");
+
+    const accesoMasActivo = Object.keys(conteoAccesos).reduce((a, b) =>
+      conteoAccesos[a] >= conteoAccesos[b] ? a : b
+    );
+
+    const zonaMasActiva = Object.keys(conteoZonas).reduce((a, b) =>
+      conteoZonas[a] >= conteoZonas[b] ? a : b
+    );
+
+    const tipoMasFrecuente = Object.keys(conteoTipos).reduce((a, b) =>
+      conteoTipos[a] >= conteoTipos[b] ? a : b
+    );
+
+    const promedioConfianza = (
+      registros.reduce((acc, r) => acc + r.confianza, 0) / registros.length
+    ).toFixed(1);
+
+    const items = [
+      { titulo: "Acceso más activo", dato: accesoMasActivo },
+      { titulo: "Zona más activa", dato: zonaMasActiva },
+      { titulo: "Tipo más detectado", dato: tipoMasFrecuente },
+      { titulo: "Promedio de confianza", dato: `${promedioConfianza}%` }
+    ];
+
+    items.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "resumen-item";
+      div.innerHTML = `
+        <div class="titulo">${item.titulo}</div>
+        <div class="dato">${item.dato}</div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function renderAlertas(registros) {
+    const container = document.getElementById("alertasContainer");
+    container.innerHTML = "";
+
+    if (registros.length === 0) {
+      container.innerHTML = `<div class="alerta info">No hay registros para generar alertas.</div>`;
+      return;
+    }
+
+    const conteoAccesos = {
+      A: registros.filter(r => r.acceso === "A").length,
+      B: registros.filter(r => r.acceso === "B").length,
+      C: registros.filter(r => r.acceso === "C").length
+    };
+
+    const conteoZonas = contarPorCampo(registros, "zona");
+    const conteoTipos = contarPorCampo(registros, "tipo");
+
+    const accesoMasActivo = Object.keys(conteoAccesos).reduce((a, b) =>
+      conteoAccesos[a] >= conteoAccesos[b] ? a : b
+    );
+
+    const zonaMasActiva = Object.keys(conteoZonas).reduce((a, b) =>
+      conteoZonas[a] >= conteoZonas[b] ? a : b
+    );
+
+    const tipoMasFrecuente = Object.keys(conteoTipos).reduce((a, b) =>
+      conteoTipos[a] >= conteoTipos[b] ? a : b
+    );
+
+    const maxZona = conteoZonas[zonaMasActiva];
+
+    const alertas = [
+      {
+        clase: "info",
+        texto: `Acceso con mayor actividad: ${accesoMasActivo} (${conteoAccesos[accesoMasActivo]} registros)`
+      },
+      {
+        clase: "ok",
+        texto: `Zona con mayor actividad: ${zonaMasActiva} (${conteoZonas[zonaMasActiva]} registros)`
+      },
+      {
+        clase: "warn",
+        texto: `Tipo más detectado: ${tipoMasFrecuente} (${conteoTipos[tipoMasFrecuente]} registros)`
+      }
+    ];
+
+    if (maxZona >= 5) {
+      alertas.push({
+        clase: "danger",
+        texto: `Atención: la zona ${zonaMasActiva} presenta alta actividad (${maxZona} registros en el filtro actual).`
+      });
+    }
+
+    alertas.forEach(alerta => {
+      const div = document.createElement("div");
+      div.className = `alerta ${alerta.clase}`;
+      div.textContent = alerta.texto;
+      container.appendChild(div);
+    });
+  }
+
+  function renderTabla(registros) {
+    const tbody = document.getElementById("tablaRegistros");
+    tbody.innerHTML = "";
+
+    const ordenados = [...registros].sort((a, b) => {
+      const da = `${a.fechaOriginal} ${a.horaOriginal}`;
+      const db = `${b.fechaOriginal} ${b.horaOriginal}`;
+      return db.localeCompare(da);
+    });
+
+    const ultimos = ordenados.slice(0, 20);
+
+    ultimos.forEach(r => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${r.fecha}</td>
+        <td>${r.hora}</td>
+        <td>${r.acceso}</td>
+        <td>${r.zona}</td>
+        <td>${r.tipo}</td>
+        <td>${r.confianza}</td>
+        <td>${r.dispositivo}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderDashboard(registros) {
+    renderTarjetas(registros);
+    renderResumenEjecutivo(registros);
+    renderAlertas(registros);
+
+    const conteoAccesos = {
+      A: registros.filter(r => r.acceso === "A").length,
+      B: registros.filter(r => r.acceso === "B").length,
+      C: registros.filter(r => r.acceso === "C").length
+    };
+    renderBarras(conteoAccesos, "accesosContainer");
+
+    const conteoZonas = contarPorCampo(registros, "zona");
+    renderBarras(conteoZonas, "zonasContainer");
+    renderTarjetasZona(conteoZonas);
+
+    const conteoTipos = contarPorCampo(registros, "tipo");
+    renderBarras(conteoTipos, "tiposContainer");
+
+    const conteoFamilias = contarPorCampo(registros, "familia");
+    renderBarras(conteoFamilias, "familiasContainer");
+
+    renderTabla(registros);
+  }
+
+  function cargarDatos() {
+    const estado = document.getElementById("estadoCarga");
+    const estadoInline = document.getElementById("estadoCargaInline");
+
+    estado.textContent = "Cargando datos desde Firebase...";
+    estadoInline.textContent = "Actualizando...";
+
+    fetch(FIREBASE_URL)
+      .then(respuesta => respuesta.json())
+      .then(data => {
+        registrosGlobales = recorrerDatos(data);
+        llenarSelectorFechas(registrosGlobales);
+        aplicarFiltroFecha();
+
+        estado.textContent = `Datos cargados correctamente. Registros encontrados: ${registrosGlobales.length}`;
+        estadoInline.textContent = `Última actualización: ${new Date().toLocaleTimeString()}`;
+      })
+      .catch(error => {
+        console.error(error);
+        estado.textContent = "Error al cargar datos desde Firebase.";
+        estadoInline.textContent = "Error de actualización";
+      });
+  }
+
+  cargarDatos();
+  setInterval(cargarDatos, 10000);
+</script>
+
+</body>
+</html>
