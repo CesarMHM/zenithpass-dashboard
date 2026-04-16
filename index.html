@@ -31,7 +31,7 @@
       color: var(--text);
     }
 
-    /* ===== HEADER PROFESIONAL ===== */
+    /* ===== HEADER CON LOGOS ===== */
     .header-zenith {
       background: linear-gradient(135deg, #0f172a, #1d4ed8);
       padding: 18px 20px;
@@ -40,54 +40,53 @@
     }
 
     .header-contenido {
+      max-width: 1400px;
+      margin: auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 18px;
-      max-width: 1400px;
-      margin: auto;
     }
 
     .header-logos {
       display: flex;
       align-items: center;
       gap: 12px;
-      min-width: 160px;
+      min-width: 170px;
     }
 
-    .header-logos.right {
+    .header-logos.derecha {
       justify-content: flex-end;
     }
 
     .logo-header {
-      height: 50px;
+      height: 52px;
       width: auto;
       object-fit: contain;
-      opacity: 0.95;
       transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
     .logo-header:hover {
-      opacity: 1;
-      transform: scale(1.05);
+      transform: scale(1.04);
+      opacity: 0.95;
     }
 
     .header-texto {
-      text-align: center;
       flex: 1;
+      text-align: center;
     }
 
     .header-texto h1 {
       margin: 0;
-      font-size: 32px;
+      font-size: 34px;
+      letter-spacing: 0.5px;
       color: white;
-      letter-spacing: 0.4px;
     }
 
     .header-texto p {
-      margin: 5px 0 0 0;
-      font-size: 14px;
+      margin: 8px 0 0 0;
       color: #dbeafe;
+      font-size: 14px;
     }
 
     .contenedor {
@@ -200,12 +199,13 @@
       }
 
       .header-logos,
-      .header-logos.right {
+      .header-logos.derecha {
         justify-content: center;
+        min-width: auto;
       }
 
-      .header-logos {
-        min-width: auto;
+      .header-texto h1 {
+        font-size: 28px;
       }
     }
 
@@ -418,8 +418,8 @@
         <p>Centro de monitoreo de accesos y flujo de visitantes</p>
       </div>
 
-      <div class="header-logos right">
-        <img src="innovatec.png" class="logo-header" alt="InnovaTecNM 2026">
+      <div class="header-logos derecha">
+        <img src="innovatec.png" class="logo-header" alt="InnovaTecNM">
         <img src="cerbero.png" class="logo-header" alt="Cerbero">
       </div>
 
